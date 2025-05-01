@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose';
+import { Document, Model, Types } from 'mongoose';
 
 export interface TUser extends Document {
     _id: Types.ObjectId;
@@ -10,5 +10,9 @@ export interface TUser extends Document {
     isDeleted?: false;
 }
 
+// statics method
+export interface UserModel extends Model<TUser> {
+    isUserExists(email: string): Promise<TUser | null>;
+}
 
 
