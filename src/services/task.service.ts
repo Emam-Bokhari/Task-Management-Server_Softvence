@@ -13,6 +13,22 @@ const createTask = async (payload: TTask, email: string) => {
     return createdTask;
 }
 
+const getAllTasksBySpecificUser = async (email: string) => {
+    const user = await User.isUserExists(email);
+    if (!user) {
+        throw new HttpError(404, "User not found");
+    }
+    const tasks = await Task.find({ createdBy: user._id }).populate("createdBy", "_id name email role");
+
+    if (tasks.length === 0) {
+        throw new HttpError(404, "No task were found provide this user ID")
+    }
+
+    return tasks;
+
+}
+
 export const TaskServices = {
     createTask,
+    getAllTasksBySpecificUser,
 }
