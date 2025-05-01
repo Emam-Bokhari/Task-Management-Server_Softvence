@@ -73,6 +73,21 @@ const updateTaskStatusByIdController = asyncHandler(async (req, res) => {
     })
 })
 
+const deleteTaskByIdController = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.user;
+
+
+    const deletedTask = await TaskServices.deleteTaskById(id, email);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Task is deleted successfully",
+        data: deletedTask,
+    })
+})
+
 
 
 export const TaskControllers = {
@@ -81,4 +96,5 @@ export const TaskControllers = {
     getTaskByIdController,
     updateTaskByIdController,
     updateTaskStatusByIdController,
+    deleteTaskByIdController,
 }
