@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TaskRoutes = void 0;
+const express_1 = __importDefault(require("express"));
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const interfaces_1 = require("../interfaces");
+const task_controller_1 = require("../controllers/task.controller");
+const task_validation_1 = require("../validations/task.validation");
+const validateRequest_1 = require("../middlewares/validateRequest");
+const router = express_1.default.Router();
+router.post('/', task_validation_1.TaskValidation.createTaskValidation, validateRequest_1.validateRequest, (0, auth_middleware_1.auth)(interfaces_1.USER_ROLE.user, interfaces_1.USER_ROLE.admin), task_controller_1.TaskControllers.createTaskController);
+router.get('/', (0, auth_middleware_1.auth)(interfaces_1.USER_ROLE.user, interfaces_1.USER_ROLE.admin), task_controller_1.TaskControllers.getAllTasksBySpecificUserController);
+router.get('/:id', (0, auth_middleware_1.auth)(interfaces_1.USER_ROLE.user, interfaces_1.USER_ROLE.admin), task_controller_1.TaskControllers.getTaskByIdController);
+router.patch('/:id', task_validation_1.TaskValidation.updateTaskValidation, validateRequest_1.validateRequest, (0, auth_middleware_1.auth)(interfaces_1.USER_ROLE.user, interfaces_1.USER_ROLE.admin), task_controller_1.TaskControllers.updateTaskByIdController);
+router.put('/:id/status', (0, auth_middleware_1.auth)(interfaces_1.USER_ROLE.user, interfaces_1.USER_ROLE.admin), task_controller_1.TaskControllers.updateTaskStatusByIdController);
+router.delete('/:id', (0, auth_middleware_1.auth)(interfaces_1.USER_ROLE.user, interfaces_1.USER_ROLE.admin), task_controller_1.TaskControllers.deleteTaskByIdController);
+exports.TaskRoutes = router;
