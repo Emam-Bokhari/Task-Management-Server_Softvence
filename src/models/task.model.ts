@@ -26,6 +26,10 @@ const taskSchema = new Schema<TTask>({
         type: String,
         required: true,
     },
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
     isDeleted: {
         type: Boolean,
         default: false,

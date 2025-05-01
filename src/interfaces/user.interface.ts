@@ -10,6 +10,13 @@ export interface TUser extends Document {
   isDeleted?: false;
 }
 
+export const USER_ROLE = {
+  user: 'user',
+  admin: 'admin',
+} as const;
+
+export type TUserRole = keyof typeof USER_ROLE;
+
 // statics method
 export interface UserModel extends Model<TUser> {
   isUserExists(email: string): Promise<TUser | null>;

@@ -46,17 +46,14 @@ const loginUser = async (payload: TLogin) => {
     );
   }
   // create jwt token
-  const jwtPayload: JwtPayload = {
+  const jwtPayload = {
     email: user.email,
     role: user.role,
   };
-  const token = jwt.sign(
-    {
-      jwtPayload,
-    },
-    config.jwt_access_secret as string,
-    { expiresIn: '7d' },
-  );
+
+  const token = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+    expiresIn: '7d',
+  });
 
   return {
     token,
