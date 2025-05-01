@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { TTask } from "../interfaces";
+import { excludeDeletedAggregation, excludeDeletedQuery } from "../utils/queryFilters";
 
 const taskSchema = new Schema<TTask>({
     title: {
@@ -40,5 +41,12 @@ const taskSchema = new Schema<TTask>({
         versionKey: false
     }
 );
+
+// query middleware for soft delete by utils
+taskSchema.pre('find', excludeDeletedQuery);
+taskSchema.pre('findOne', excludeDeletedQuery);
+
+// aggregation middleware for soft delete by utils
+taskSchema.pre('aggregate', excludeDeletedAggregation);
 
 export const Task = model<TTask>("Task", taskSchema);

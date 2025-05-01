@@ -13,7 +13,7 @@ router.get("/:id", auth(USER_ROLE.user, USER_ROLE.admin), TaskControllers.getTas
 
 router.patch("/:id", auth(USER_ROLE.user, USER_ROLE.admin), TaskControllers.updateTaskByIdController);
 
-router.patch("/:id/status", auth(USER_ROLE.user, USER_ROLE.admin), TaskControllers.updateTaskStatusByIdController);
+router.put("/:id/status", auth(USER_ROLE.user, USER_ROLE.admin), TaskControllers.updateTaskStatusByIdController);
 
 router.delete("/:id", auth(USER_ROLE.user, USER_ROLE.admin), TaskControllers.deleteTaskByIdController)
 

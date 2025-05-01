@@ -63,7 +63,7 @@ const updateTaskStatusByIdController = asyncHandler(async (req, res) => {
     const { email } = req.user;
 
 
-    const updatedTaskStatus = await TaskServices.updateTaskById(id, status, email);
+    const updatedTaskStatus = await TaskServices.updateTaskStatusById(id, status, email);
 
     sendResponse(res, {
         success: true,

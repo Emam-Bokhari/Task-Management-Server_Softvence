@@ -87,9 +87,10 @@ const updateTaskStatusById = async (
     const user = await User.isUserExists(email);
     if (!user) throw new HttpError(404, 'User not found');
 
+
     // update task status
     const updatedTaskStatus = await Task.findOneAndUpdate(
-        { _id: id, createdBy: user._id },
+        { _id: id, createdBy: user._id, isDeleted: false },
         { status },
         { runValidators: true, new: true },
     );
