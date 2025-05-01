@@ -1,6 +1,8 @@
+import config from "../config";
 import { HttpError } from "../errors/HttpError";
 import { TLogin, TUser } from "../interfaces";
 import { User } from "../models/user.model";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const registerUser = async (payload: TUser) => {
     // check if user is exists
@@ -37,9 +39,30 @@ const loginUser = async (payload: TLogin) => {
     if (user.status === "banned") {
         throw new HttpError(403, "The user account is banned")
     }
+    // check if the user password is matched
+    if (!(await User.isPasswordMatched(payload.password, user.password))) {
+        throw new HttpError(
+            401,
+            'Your password is incorrect, Please try again with correct password',
+        );
+    }
+    // create jwt token
+    const jwtPayload: JwtPayload = {
+        email: user.email,
+        role: user.role,
+    }
+    const token = jwt.sign({
+        jwtPayload,
+    }, config.jwt_access_secret as string, { expiresIn: '7d' });
+
+    return {
+        token
+    };
+
 }
 
 export const AuthServices = {
     registerUser,
+    loginUser,
 }
 
