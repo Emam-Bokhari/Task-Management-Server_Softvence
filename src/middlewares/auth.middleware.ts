@@ -26,9 +26,9 @@ export const auth = (...requiredRoles: TUserRole[]) => {
                 config.jwt_access_secret as string,
             ) as JwtPayload;
 
-            // console.log(decoded.jwtPayload)
 
-            const { email, role } = decoded.jwtPayload;
+
+            const { email, role } = decoded;
 
             // check if the user exists using the email
             const user = await User.isUserExists(email);

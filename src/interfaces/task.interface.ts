@@ -1,4 +1,11 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
+
+interface IUser {
+    _id: mongoose.Types.ObjectId;
+    name: string;
+    email: string;
+    role: string;
+}
 
 export type TTask = {
     title: string;
@@ -6,6 +13,6 @@ export type TTask = {
     category: "artsAndCraft" | "nature" | "family" | "sport" | "friends" | "meditation";
     status?: "allTask" | "onGoing" | "pending" | "collaborativeTask" | "done";
     endDate: string;
-    createdBy?: Types.ObjectId;
+    createdBy?: Types.ObjectId | IUser;
     isDeleted?: boolean;
 }
