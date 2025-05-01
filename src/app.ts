@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import router from './routes';
+import { globalErrorHandler } from './middlewares/globalErrorHandler.middleware';
+import notFound from './middlewares/notFound.middleware';
 
 const app = express();
 
@@ -17,5 +19,11 @@ app.use('/api/v1', router);
 app.get('/', (req, res) => {
   res.send('Server is running...');
 });
+
+// global error handler
+app.use(globalErrorHandler)
+
+// not found error handler
+app.use(notFound)
 
 export default app;
