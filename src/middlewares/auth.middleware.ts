@@ -6,62 +6,59 @@ import { TUserRole } from '../interfaces';
 import { asyncHandler } from '../utils/asyncHandler';
 import { User } from '../models/user.model';
 
-
 export const auth = (...requiredRoles: TUserRole[]) => {
-    return asyncHandler(
-        async (req: Request, res: Response, next: NextFunction) => {
-            const token = req.headers.authorization;
+  return asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const token = req.headers.authorization;
 
-            // check if no token
-            if (!token) {
-                throw new HttpError(
-                    401,
-                    'Access token is missing or invalid. Please provide a valid token to access this resource.',
-                );
-            }
+      // check if no token
+      if (!token) {
+        throw new HttpError(
+          401,
+          'Access token is missing or invalid. Please provide a valid token to access this resource.',
+        );
+      }
 
-            // token verify
-            const decoded = jwt.verify(
-                token,
-                config.jwt_access_secret as string,
-            ) as JwtPayload;
+      // token verify
+      const decoded = jwt.verify(
+        token,
+        config.jwt_access_secret as string,
+      ) as JwtPayload;
 
+      const { email, role } = decoded;
 
+      // check if the user exists using the email
+      const user = await User.isUserExists(email);
+      if (!user) {
+        throw new HttpError(
+          404,
+          'Invalid credentials or session. Please try logging in again',
+        );
+      }
 
-            const { email, role } = decoded;
+      // check if the user is already deleted
+      if (user.isDeleted) {
+        throw new HttpError(404, 'The user is already deleted');
+      }
 
-            // check if the user exists using the email
-            const user = await User.isUserExists(email);
-            if (!user) {
-                throw new HttpError(
-                    404,
-                    'Invalid credentials or session. Please try logging in again',
-                );
-            }
+      // // check if the user is banned
+      if (user.status === 'banned') {
+        throw new HttpError(
+          403,
+          'Your account has been banned. Please contact support for assistance.',
+        );
+      }
 
-            // check if the user is already deleted
-            if (user.isDeleted) {
-                throw new HttpError(404, 'The user is already deleted');
-            }
+      if (requiredRoles && !requiredRoles.includes(role)) {
+        throw new HttpError(
+          403,
+          'Access denied. Your role does not have the necessary permissions to perform this action.',
+        );
+      }
 
-            // // check if the user is banned
-            if (user.status === 'banned') {
-                throw new HttpError(
-                    403,
-                    'Your account has been banned. Please contact support for assistance.',
-                );
-            }
+      req.user = decoded as JwtPayload;
 
-            if (requiredRoles && !requiredRoles.includes(role)) {
-                throw new HttpError(
-                    403,
-                    'Access denied. Your role does not have the necessary permissions to perform this action.',
-                );
-            }
-
-            req.user = decoded as JwtPayload;
-
-            next();
-        },
-    );
+      next();
+    },
+  );
 };
