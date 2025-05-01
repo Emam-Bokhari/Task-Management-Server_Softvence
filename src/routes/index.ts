@@ -10,9 +10,9 @@ const moduleRoutes = [
     route: AuthRoutes,
   },
   {
-    path: "/tasks",
-    route: TaskRoutes
-  }
+    path: '/tasks',
+    route: TaskRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
