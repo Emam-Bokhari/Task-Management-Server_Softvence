@@ -78,6 +78,31 @@ const updateTaskById = async (
     return updatedTask;
 };
 
+const updateTaskStatusById = async (
+    id: string,
+    status: string,
+    email: string,
+) => {
+    // check if user exists
+    const user = await User.isUserExists(email);
+    if (!user) throw new HttpError(404, 'User not found');
+
+    // update task status
+    const updatedTaskStatus = await Task.findOneAndUpdate(
+        { _id: id, createdBy: user._id },
+        { status },
+        { runValidators: true, new: true },
+    );
+
+    if (!updatedTaskStatus)
+        throw new HttpError(
+            403,
+            'You are not allowed to update this task status',
+        );
+
+    return updatedTaskStatus;
+};
+
 const deleteTaskById = async (id: string, email: string) => {
     const user = await User.isUserExists(email)
     if (!user) {
@@ -106,5 +131,6 @@ export const TaskServices = {
     getAllTasksBySpecificUser,
     getTaskById,
     updateTaskById,
+    updateTaskStatusById,
     deleteTaskById,
 }
