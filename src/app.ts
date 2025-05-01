@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import router from "./routes";
 
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(helmet());
 
 // application routes
+app.use("/api/v1", router)
 
 // check health
 app.get("/", (req, res) => {

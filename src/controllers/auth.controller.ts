@@ -21,7 +21,7 @@ const loginUserController = asyncHandler(async (req, res) => {
     sendResponse(res, {
         success: true,
         statusCode: 200,
-        message: "User loggedin successfully",
+        message: "User loggedIn successfully",
         data: loginResult,
     })
 })
