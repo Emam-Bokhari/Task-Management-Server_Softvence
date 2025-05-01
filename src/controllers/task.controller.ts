@@ -41,10 +41,27 @@ const getTaskByIdController = asyncHandler(async (req, res) => {
     })
 })
 
+const updateTaskByIdController = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const updatedPayload = req.body;
+    const { email } = req.user;
+
+
+    const updatedTask = await TaskServices.updateTaskById(id, updatedPayload, email);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Task is updated successfully",
+        data: updatedTask,
+    })
+})
+
 
 
 export const TaskControllers = {
     createTaskController,
     getAllTasksBySpecificUserController,
     getTaskByIdController,
+    updateTaskByIdController,
 }
