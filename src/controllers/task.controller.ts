@@ -14,6 +14,19 @@ const createTaskController = asyncHandler(async (req, res) => {
     })
 })
 
+const getAllTasksBySpecificUserController = asyncHandler(async (req, res) => {
+    const { email } = req.user.jswPayload;
+    const tasks = await TaskServices.getAllTasksBySpecificUser(email);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Task are retrieved successfully",
+        data: tasks,
+    })
+})
+
 export const TaskControllers = {
     createTaskController,
+    getAllTasksBySpecificUserController,
 }

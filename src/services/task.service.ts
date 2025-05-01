@@ -28,7 +28,28 @@ const getAllTasksBySpecificUser = async (email: string) => {
 
 }
 
+const getTaskById = async (id: string, email: string) => {
+    const user = await User.isUserExists(email);
+    if (!user) {
+        throw new HttpError(404, "User not found");
+    }
+
+    const task = await Task.findById(id).populate("createdBy", "_id name email role")
+
+    console.log(task)
+
+    if (!task) {
+        throw new HttpError(404, "No task found with ID")
+    };
+
+
+
+    return task;
+
+}
+
 export const TaskServices = {
     createTask,
     getAllTasksBySpecificUser,
+    getTaskById,
 }
