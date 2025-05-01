@@ -1,5 +1,8 @@
 import { model, Schema } from 'mongoose';
 import { TUser, UserModel } from '../interfaces';
+import bcrypt from "bcrypt"
+import config from '../config';
+
 
 const userSchema = new Schema<TUser, UserModel>(
     {
@@ -47,9 +50,26 @@ const userSchema = new Schema<TUser, UserModel>(
     },
 );
 
+// hashed password by bcrypt
+userSchema.pre("save", async function (next) {
+    this.password = await bcrypt.hash(this.password, Number(config.bcrypt_salt_rounds))
+    next();
+})
+
+// password field is empty
+userSchema.post("save", async function (doc, next) {
+    doc.password = "";
+    next()
+})
+
 // statics method for check user exists
 userSchema.statics.isUserExists = async (email: string) => {
     return await User.findOne({ email: email }).select("+password")
+}
+
+// statics method for password matched
+userSchema.statics.isPasswordMatched = async (plainTextPassword, hashedPassword) => {
+    return await bcrypt.compare(plainTextPassword, hashedPassword)
 }
 
 

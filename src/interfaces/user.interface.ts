@@ -13,6 +13,7 @@ export interface TUser extends Document {
 // statics method
 export interface UserModel extends Model<TUser> {
     isUserExists(email: string): Promise<TUser | null>;
+    isPasswordMatched(plainTextPassword: string, hashedPassword: string): Promise<boolean>
 }
 
 
