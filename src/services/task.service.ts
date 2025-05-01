@@ -78,9 +78,33 @@ const updateTaskById = async (
     return updatedTask;
 };
 
+const deleteTaskById = async (id: string, email: string) => {
+    const user = await User.isUserExists(email)
+    if (!user) {
+        throw new HttpError(404, "User not found")
+    }
+
+    const task = await Task.findOne({ _id: id, createdBy: user._id });
+
+    if (!task) {
+        throw new HttpError(403, 'You are not allowed to delete this task');
+    }
+
+    const deletedTask = await Task.findOneAndUpdate(
+        { _id: id },
+        { isDeleted: true },
+        { new: true },
+    );
+
+    return deletedTask;
+
+
+}
+
 export const TaskServices = {
     createTask,
     getAllTasksBySpecificUser,
     getTaskById,
     updateTaskById,
+    deleteTaskById,
 }
