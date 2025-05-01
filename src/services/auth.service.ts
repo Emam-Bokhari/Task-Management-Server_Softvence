@@ -2,7 +2,7 @@ import config from '../config';
 import { HttpError } from '../errors/HttpError';
 import { TLogin, TUser } from '../interfaces';
 import { User } from '../models/user.model';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 const registerUser = async (payload: TUser) => {
   // check if user is exists
