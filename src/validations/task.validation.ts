@@ -34,9 +34,16 @@ const createTaskValidation = [
 
   check('status')
     .optional()
-    .isIn(['allTask', 'onGoing', 'pending', 'collaborativeTask', 'done'])
+    .isIn([
+      'allTask',
+      'onGoing',
+      'inProgress',
+      'pending',
+      'collaborativeTask',
+      'done',
+    ])
     .withMessage(
-      'Status must be one of: allTask, onGoing, pending, collaborativeTask, done',
+      'Status must be one of: allTask, onGoing, inProgress, pending, collaborativeTask, done',
     ),
 
   check('endDate').notEmpty().withMessage('End date is required'),
@@ -73,9 +80,16 @@ const updateTaskValidation = [
 
   check('status')
     .optional()
-    .isIn(['allTask', 'onGoing', 'pending', 'collaborativeTask', 'done'])
+    .isIn([
+      'allTask',
+      'onGoing',
+      'pending',
+      'inProgress',
+      'collaborativeTask',
+      'done',
+    ])
     .withMessage(
-      'Status must be one of: allTask, onGoing, pending, collaborativeTask, done',
+      'Status must be one of: allTask,inProgress, onGoing, pending, collaborativeTask, done',
     ),
 
   check('endDate').optional(),

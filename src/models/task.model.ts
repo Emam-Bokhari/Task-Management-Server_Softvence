@@ -31,7 +31,14 @@ const taskSchema = new Schema<TTask>(
     },
     status: {
       type: String,
-      enum: ['allTask', 'onGoing', 'pending', 'collaborativeTask', 'done'],
+      enum: [
+        'allTask',
+        'onGoing',
+        'inProgress',
+        'pending',
+        'collaborativeTask',
+        'done',
+      ],
       default: 'pending',
     },
     endDate: {

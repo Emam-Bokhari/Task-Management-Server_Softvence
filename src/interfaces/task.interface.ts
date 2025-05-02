@@ -17,7 +17,13 @@ export type TTask = {
     | 'sport'
     | 'friends'
     | 'meditation';
-  status?: 'allTask' | 'onGoing' | 'pending' | 'collaborativeTask' | 'done';
+  status?:
+    | 'allTask'
+    | 'onGoing'
+    | 'inProgress'
+    | 'pending'
+    | 'collaborativeTask'
+    | 'done';
   endDate: string;
   createdBy?: Types.ObjectId | IUser;
   isDeleted?: boolean;
