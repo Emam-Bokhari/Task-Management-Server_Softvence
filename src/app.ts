@@ -11,7 +11,7 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
+app.use(cors({ origin: ['https://task-management-frontend-softvence.vercel.app'], credentials: true }));
 app.use(helmet());
 
 // application routes
